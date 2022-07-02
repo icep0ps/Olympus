@@ -1,7 +1,13 @@
 require('dotenv').config();
-import { getMaps } from './main-logic';
 const Discord = require('discord.js');
+const fs = require('fs');
 const client = new Discord.Client({ intents: ['GUILDS', 'GUILD_MESSAGES'] });
+client.commands = new Discord.Collection();
+const commandFiles = fs.readdirSync('./commands/');
+for (const file of commandFiles) {
+  const command = require(`./commands/${file}`);
+  client.commands.set(command.name, command);
+}
 
 const BOT_PREFIX = '!';
 const MAPS = 'olympus';
@@ -14,7 +20,7 @@ client.on('ready', () => {
 client.on('messageCreate', (msg) => {
   if (msg.content === `${BOT_PREFIX}${MAPS}`) {
     MsgContent = msg;
-    getMaps();
+    client.commands.get('get maps').execute(MsgContent);
   }
 });
 
