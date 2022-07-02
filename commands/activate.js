@@ -3,19 +3,39 @@ const { MessageEmbed } = require('discord.js');
 var formatDistance = require('date-fns/formatDistance');
 
 module.exports = {
-  name: 'get maps',
-  description: 'Gets current maps once.',
+  name: 'Activate',
+  description: 'Activates bot to run automatically.',
   execute(message) {
     const logic = (() => {
       async function getMaps() {
-        const reposnse = await fetch(
-          `https://api.mozambiquehe.re/maprotation?auth=${process.env.API_KEY}`
-        );
-        const data = await reposnse.json();
-        display.displayInfo(data);
+        if (message.content == '!activate') {
+          const reposnse = await fetch(
+            `https://api.mozambiquehe.re/maprotation?auth=${process.env.API_KEY}`
+          );
+          const data = await reposnse.json();
+          display.displayInfo(data);
+          console.log('Reminder set');
+          reminder(data);
+        } else if (message.content == '!deactivate') {
+          console.log('shutting down');
+          clearTimeout(timer);
+        }
       }
 
-      return { getMaps };
+      function reminder(data) {
+        const currentMapDuration = data.current.remainingTimer;
+        const a = currentMapDuration.split(':');
+        const seconds = +a[0] * 60 * 60 + +a[1] * 60 + +a[2];
+        const nextMap = data.current.map;
+        if (nextMap != 'Olympus') {
+          const milliseconds = seconds * 2 * 1000;
+          timer = setTimeout(getMaps, milliseconds);
+        } else {
+          const milliseconds = seconds * 1000;
+          timer = setTimeout(getMaps, milliseconds);
+        }
+      }
+      return { getMaps, reminder };
     })();
 
     const display = (() => {
@@ -79,24 +99,6 @@ module.exports = {
             .setDescription(msg)
             .setImage(
               'https://64.media.tumblr.com/7b7eabc281cc5f9b8dc30bfd53a8eb89/tumblr_pomzxhKods1txj8weo4_540.gif'
-            )
-            .setTimestamp()
-            .setFooter({
-              text: 'Made by Icepops',
-              iconURL: 'https://avatars.githubusercontent.com/u/96955965?v=4',
-            });
-          message.channel.send({ embeds: [exampleEmbed] });
-        } else {
-          let msg = `
-          Unfortunately the current map is **${currentMap}** 
-          **Ending**  <t:${currentMapDuration}:R>   or at <t:${currentMapDuration}:T>
-          **Next up:** ${nextMap} for ${nextDurationRead}`;
-          const exampleEmbed = new MessageEmbed()
-            .setColor('#0099ff')
-            .setTitle('Sorry Amigo')
-            .setDescription(msg)
-            .setImage(
-              'https://i0.wp.com/media2.giphy.com/media/9VrDjCjGMti4rZ4wEG/source.gif?resize=650,400'
             )
             .setTimestamp()
             .setFooter({

@@ -11,6 +11,8 @@ for (const file of commandFiles) {
 
 const BOT_PREFIX = '!';
 const MAPS = 'olympus';
+const ACTIVATE = 'activate';
+const DEACTIVATE = 'deactivate';
 let MsgContent = undefined;
 
 client.on('ready', () => {
@@ -21,6 +23,13 @@ client.on('messageCreate', (msg) => {
   if (msg.content === `${BOT_PREFIX}${MAPS}`) {
     MsgContent = msg;
     client.commands.get('get maps').execute(MsgContent);
+  }
+  if (
+    msg.content === `${BOT_PREFIX}${ACTIVATE}` ||
+    msg.content === `${BOT_PREFIX}${DEACTIVATE}`
+  ) {
+    MsgContent = msg;
+    client.commands.get('Activate').execute(MsgContent);
   }
 });
 
