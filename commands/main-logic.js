@@ -1,6 +1,6 @@
 const { fetch } = require('undici');
 const { MessageEmbed } = require('discord.js');
-var formatDistance = require('date-fns/formatDistance');
+var formatDistanceStrict = require('date-fns/formatDistanceStrict');
 
 module.exports = {
   name: 'get maps',
@@ -40,20 +40,27 @@ module.exports = {
         const d = nextMapEnd.split(' ');
         const e = d[0].split('-');
         const f = d[1].split(':');
-        const nextDurationRead = formatDistance(
+        const nextDurationRead = formatDistanceStrict(
           new Date(b[0], b[1], b[2], c[0], c[1], c[2]),
           new Date(e[0], e[1], e[2], f[0], f[1], f[2]),
 
-          { unit: 'hour' }
+          { unit: 'minute' },
+          { roundingMethod: 'floor' }
         );
+        let duration = undefined;
+        if (nextDurationRead.split(' ')[0] > 60) {
+          duration = ' 1 hour, 30 minutes.';
+        } else {
+          duration = ' 1 hour';
+        }
         const nextMap = data.next.map;
         const random = Math.floor(Math.random() * VOICE_LINES.length);
 
         if (currentMap == 'Olympus') {
           let msg = `
             **${VOICE_LINES[random]}**
-             The current map is **${currentMap}**, ends in <t:${currentMapDuration}:R> of swimmin' in stim, and getting some wins!
-             **Next up:** ${nextMap} for ${nextDurationRead}`;
+             The current map is **${currentMap}**, ends in <t:${currentMapDuration}:R>. We will be swimmin' in stim, and getting some wins!
+             **Next up:** ${nextMap} for ${duration}`;
           const exampleEmbed = new MessageEmbed()
             .setColor('#0099ff')
             .setTitle(`It's showtime!`)
@@ -71,7 +78,7 @@ module.exports = {
           let msg = `
             Get ready amigo the current map is **${currentMap}** 
             **Ending**  <t:${currentMapDuration}:R>   or at <t:${currentMapDuration}:T>
-            **Next up:** ${nextMap} for ${nextDurationRead}
+            **Next up:** ${nextMap} for ${duration}
             You all ready for the Octrain?`;
           const exampleEmbed = new MessageEmbed()
             .setColor('#0099ff')
@@ -90,7 +97,7 @@ module.exports = {
           let msg = `
           Unfortunately the current map is **${currentMap}** 
           **Ending**  <t:${currentMapDuration}:R>   or at <t:${currentMapDuration}:T>
-          **Next up:** ${nextMap} for ${nextDurationRead}`;
+          **Next up:** ${nextMap} for ${duration}`;
           const exampleEmbed = new MessageEmbed()
             .setColor('#0099ff')
             .setTitle('Sorry Amigo')

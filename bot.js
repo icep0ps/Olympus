@@ -13,6 +13,7 @@ const BOT_PREFIX = '!';
 const MAPS = 'olympus';
 const ACTIVATE = 'activate';
 const DEACTIVATE = 'deactivate';
+const HELP = 'help';
 let MsgContent = undefined;
 
 client.on('ready', () => {
@@ -30,6 +31,11 @@ client.on('messageCreate', (msg) => {
   ) {
     MsgContent = msg;
     client.commands.get('Activate').execute(MsgContent);
+  }
+
+  if (msg.content === `${BOT_PREFIX}${HELP}`) {
+    MsgContent = msg;
+    client.commands.get('help').execute(MsgContent);
   }
 });
 
