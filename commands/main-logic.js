@@ -66,7 +66,7 @@ module.exports = {
             .setTitle(`It's showtime!`)
             .setDescription(msg)
             .setImage(
-              'https://media.giphy.com/media/Se52SxwN2H5LGU4bGP/giphy.gif'
+              'https://media.giphy.com/media/udbvDtBh5POAa6aJzx/giphy-downsized-large.gif'
             )
             .setTimestamp()
             .setFooter({

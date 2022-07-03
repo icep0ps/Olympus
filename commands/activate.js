@@ -8,29 +8,35 @@ module.exports = {
   execute(message) {
     const logic = (() => {
       async function getMaps() {
-        if (message.content == '!activate') {
-          const reposnse = await fetch(
-            `https://api.mozambiquehe.re/maprotation?auth=${process.env.API_KEY}`
+        try {
+          if (message.content == '!activate') {
+            const reposnse = await fetch(
+              `https://api.mozambiquehe.re/maprotation?auth=${process.env.API_KEY}`
+            );
+            const data = await reposnse.json();
+            display.displayInfo(data);
+            reminder(data);
+          } else if (message.content == '!deactivate') {
+            clearTimeout(timer);
+          }
+        } catch {
+          message.channel.send(
+            'Sorry amigo, i am having network problems try again'
           );
-          const data = await reposnse.json();
-          display.displayInfo(data);
-          console.log('Reminder set');
-          reminder(data);
-        } else if (message.content == '!deactivate') {
-          clearTimeout(timer);
         }
       }
 
       function reminder(data) {
         const currentMapDuration = data.current.remainingTimer;
+        const nextMapDuration = data.next.DurationInSecs;
         const a = currentMapDuration.split(':');
         const seconds = +a[0] * 60 * 60 + +a[1] * 60 + +a[2];
-        const nextMap = data.current.map;
-        if (nextMap != 'Olympus') {
-          const milliseconds = seconds * 2 * 1000;
+        const nextMap = data.next.map;
+        if (nextMap == 'Olympus') {
+          const milliseconds = seconds * 1000;
           timer = setTimeout(getMaps, milliseconds);
         } else {
-          const milliseconds = seconds * 1000;
+          const milliseconds = seconds + nextMapDuration * 1000;
           timer = setTimeout(getMaps, milliseconds);
         }
       }
@@ -101,7 +107,7 @@ module.exports = {
             You all ready for the Octrain?`;
           const exampleEmbed = new MessageEmbed()
             .setColor('#0099ff')
-            .setTitle('Its almost time compadre')
+            .setTitle('Its almost time compadres')
             .setDescription(msg)
             .setImage(
               'https://64.media.tumblr.com/7b7eabc281cc5f9b8dc30bfd53a8eb89/tumblr_pomzxhKods1txj8weo4_540.gif'
