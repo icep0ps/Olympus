@@ -82,7 +82,7 @@ module.exports = {
         if (currentMap == 'Olympus') {
           let msg = `
             **${VOICE_LINES[random]}**
-             The current map is **${currentMap}**, ends in <t:${currentMapDuration}:R>. We will beswimmin' in stim, and getting some wins!
+             The current map is **${currentMap}**, ends in <t:${currentMapDuration}:R>. We will be swimmin' in stim, and getting some wins!
              **Next up:** ${nextMap} for ${duration}`;
           const exampleEmbed = new MessageEmbed()
             .setColor('#0099ff')
