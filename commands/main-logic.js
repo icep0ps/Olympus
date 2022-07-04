@@ -7,12 +7,18 @@ module.exports = {
   description: 'Gets current maps once.',
   execute(message) {
     const logic = (() => {
-      async function getMaps() {
-        const reposnse = await fetch(
-          `https://api.mozambiquehe.re/maprotation?auth=${process.env.API_KEY}`
+      try {
+        async function getMaps() {
+          const reposnse = await fetch(
+            `https://api.mozambiquehe.re/maprotation?auth=${process.env.API_KEY}`
+          );
+          const data = await reposnse.json();
+          display.displayInfo(data);
+        }
+      } catch {
+        message.channel.send(
+          'Sorry amigo, i am having network problems try again'
         );
-        const data = await reposnse.json();
-        display.displayInfo(data);
       }
 
       return { getMaps };
