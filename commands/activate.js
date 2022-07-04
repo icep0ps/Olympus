@@ -20,6 +20,7 @@ module.exports = {
             clearTimeout(timer);
           }
         } catch {
+          setTimeout(getMaps, 60000);
           message.channel.send(
             'Sorry amigo, i am having network problems try again'
           );
