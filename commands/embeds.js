@@ -1,10 +1,11 @@
 const { MessageEmbed, Client } = require('discord.js');
+const { fetch } = require('undici');
 
 const createEmebeds = (() => {
   const isOlympus = (message, description, client) => {
     const embed = new MessageEmbed()
       .setColor('#0099ff')
-      .setTitle(`It's showtime!`)
+      .setTitle(`It's showtime! `)
       .setDescription(description)
       .setImage(
         'https://media.giphy.com/media/udbvDtBh5POAa6aJzx/giphy-downsized-large.gif'
@@ -65,32 +66,34 @@ const createMessages = (() => {
   const isOlympus = (currentMap, currentMapDuration, nextMap, DURATION) => {
     let description = `
     **${VOICE_LINES[RANDOM_LINE]}**
-     The current map is **${currentMap}** <@&993796946760318976> , ends in <t:${currentMapDuration}:R>. We will be swimmin' in stim, and getting some wins!
+     The current map is **${currentMap}** , ends in <t:${currentMapDuration}:R>. We will be swimmin' in stim, and getting some wins!
      **Next up:** ${nextMap} for ${DURATION}
-     **Subscribe** to auto-notification by clicking 🟢
-     **Unsubscribe** by clicking 🔴`;
+     <@&993796946760318976>
+     **Enable auto-notification**: 🟢
+     **Disable auto-notification**: 🔴`;
 
     return description;
   };
 
   const almostOlympus = (currentMap, currentMapDuration, nextMap, DURATION) => {
     let description = `
-Get ready <@&993796946760318976> the current map is **${currentMap}** 
+Get ready the current map is **${currentMap}** 
 **Ending**  <t:${currentMapDuration}:R>   or at <t:${currentMapDuration}:T>
 **Next up:** ${nextMap} for ${DURATION}
 You all ready for the Octrain?
-**Subscribe** to auto-notification by clicking 🟢
-**Unsubscribe** by clicking🔴`;
+<@&993796946760318976> 
+**Enable auto-notification**: 🟢
+**Disable auto-notification**: 🔴`;
     return description;
   };
 
   const notOlympus = (currentMap, currentMapDuration, nextMap, DURATION) => {
     let description = `
     Unfortunately the current map is **${currentMap}** 
-    **Ending**  <t:${currentMapDuration}:R>   or at <t:${currentMapDuration}:T>
+    **Ending**  <t:${currentMapDuration}:R> or at <t:${currentMapDuration}:T>
     **Next up:** ${nextMap} for ${DURATION}
-    **Subscribe** to auto-notification by clicking 🟢
-    **Unsubscribe** by clicking🔴`;
+    **Enable auto-notification**: 🟢
+    **Disable auto-notification**: 🔴`;
     return description;
   };
 
