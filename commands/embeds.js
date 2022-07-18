@@ -108,9 +108,7 @@ const sendEmebeds = (() => {
   const isNotOlympuschan = '🔴';
 
   const sendEmebed = async (message, client, embed) => {
-    const myrole = await message.guild.roles.cache.find(
-      (role) => role.name == 'Olympus-chan'
-    );
+    const myrole = '694681231782051922';
     let makeOlympuschan = await message.channel.send({ embeds: [embed] });
     makeOlympuschan.react(Olympuschan);
     makeOlympuschan.react(isNotOlympuschan);
@@ -122,7 +120,6 @@ const sendEmebeds = (() => {
       if (!reaction.message.guild) return;
       if (reaction.message.channel.id == channel) {
         if (reaction.emoji.name == Olympuschan) {
-          console.log(myrole);
           await reaction.message.guild.members.cache
             .get(user.id)
             .roles.add(myrole);
