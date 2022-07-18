@@ -1,5 +1,4 @@
-const { MessageEmbed, Client } = require('discord.js');
-const { fetch } = require('undici');
+const { MessageEmbed } = require('discord.js');
 
 const createEmebeds = (() => {
   const isOlympus = (message, description, client) => {
@@ -65,12 +64,13 @@ const createMessages = (() => {
 
   const isOlympus = (currentMap, currentMapDuration, nextMap, DURATION) => {
     let description = `
-    **${VOICE_LINES[RANDOM_LINE]}**
-     The current map is **${currentMap}** , ends in <t:${currentMapDuration}:R>. We will be swimmin' in stim, and getting some wins!
-     **Next up:** ${nextMap} for ${DURATION}
-     <@&993796946760318976>
-     **Enable auto-notification**: 🟢
-     **Disable auto-notification**: 🔴`;
+**${VOICE_LINES[RANDOM_LINE]}**
+The current map is **${currentMap}** , ends in <t:${currentMapDuration}:R>. We will be swimmin' in stim, and getting some wins!
+**Next up:** ${nextMap} for ${DURATION}
+<@&993796946760318976>
+ 
+**Enable auto-notification**:  🟢
+**Disable auto-notification**: 🔴`;
 
     return description;
   };
@@ -81,8 +81,9 @@ Get ready the current map is **${currentMap}**
 **Ending**  <t:${currentMapDuration}:R>   or at <t:${currentMapDuration}:T>
 **Next up:** ${nextMap} for ${DURATION}
 You all ready for the Octrain?
-<@&993796946760318976> 
-**Enable auto-notification**: 🟢
+<@&993796946760318976>
+
+**Enable auto-notification**:  🟢
 **Disable auto-notification**: 🔴`;
     return description;
   };
@@ -92,7 +93,8 @@ You all ready for the Octrain?
     Unfortunately the current map is **${currentMap}** 
     **Ending**  <t:${currentMapDuration}:R> or at <t:${currentMapDuration}:T>
     **Next up:** ${nextMap} for ${DURATION}
-    **Enable auto-notification**: 🟢
+
+    **Enable auto-notification**:  🟢
     **Disable auto-notification**: 🔴`;
     return description;
   };
@@ -106,7 +108,7 @@ const sendEmebeds = (() => {
   const isNotOlympuschan = '🔴';
 
   const sendEmebed = async (message, client, embed) => {
-    const myrole = message.guild.roles.cache.find(
+    const myrole = await message.guild.roles.cache.find(
       (role) => role.name == 'Olympus-chan'
     );
     let makeOlympuschan = await message.channel.send({ embeds: [embed] });
@@ -120,6 +122,7 @@ const sendEmebeds = (() => {
       if (!reaction.message.guild) return;
       if (reaction.message.channel.id == channel) {
         if (reaction.emoji.name == Olympuschan) {
+          console.log(myrole);
           await reaction.message.guild.members.cache
             .get(user.id)
             .roles.add(myrole);
