@@ -108,7 +108,7 @@ const sendEmebeds = (() => {
   const isNotOlympuschan = '🔴';
 
   const sendEmebed = async (message, client, embed) => {
-    const myrole = '694681231782051922';
+    const myrole = '993796946760318976';
     let makeOlympuschan = await message.channel.send({ embeds: [embed] });
     makeOlympuschan.react(Olympuschan);
     makeOlympuschan.react(isNotOlympuschan);
